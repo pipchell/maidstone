@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bin Collections - Royston</title>
+<title>Bin Collections - Marden</title>
 <link rel="icon" type="image/png" href="logo2.png">
 
 <style>
@@ -14,9 +14,7 @@
     font-weight: 700;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -34,8 +32,8 @@ body {
 
 h1 {
     text-align: center;
-    font-family:'LeagueSpartan';
-    font-weight:700;
+    font-family: 'LeagueSpartan';
+    font-weight: 700;
     margin-bottom: 40px;
     color: #17D860;
     font-size: 40px;
@@ -46,74 +44,59 @@ h1 {
     margin-bottom: 30px;
     border-radius: 12px;
     border: 6px solid #333;
-    font-family:'LeagueSpartan';
-    color:white;
+    font-family: 'LeagueSpartan';
+    color: white;
     width: 100%;
     text-align: center;
 }
 
-.purple { background:#2b004d; }
-.brown { background:#3b2400; }
-.black { background:#111; }
-.brown2 { background:#3b2400; }
-.blue { background:#003d7d; }
+.blackbin { background: #111; }
+.orange { background: #7a3e00; }
+.green { background: #003d1a; }
+.brown { background: #3b2400; }
 
 .today, .tomorrow {
     color: #4db6ff;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 footer {
-    text-align:center;
-    margin-top:50px;
-    font-family:'LeagueSpartan';
-    font-size:18px;
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'LeagueSpartan';
+    font-size: 18px;
 }
 
 @media screen and (max-width: 768px) {
-    .wrapper {
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 44px;
-    }
-
-    .bin {
-        padding: 36px;
-        font-size: 20px;
-    }
-
-    .today, .tomorrow {
-        font-size: 22px;
-    }
-
-    footer {
-        font-size: 20px;
-    }
+    .wrapper { padding: 15px; }
+    h1 { font-size: 44px; }
+    .bin { padding: 36px; font-size: 20px; }
+    .today, .tomorrow { font-size: 22px; }
+    footer { font-size: 20px; }
 }
 </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <h1>Bin Collections - Royston</h1>
+    <h1>Bin Collections - Marden</h1>
 
     <div id="output"></div>
 
-    <footer>Pip Chell - V4.6</footer>
+    <footer>Pip Chell - Marden Edition</footer>
 
     <h6 style="
         text-align:center;
-        font-family:'LeagueSpartan', sans-serif;
+        font-family:'LeagueSpartan';
         font-weight:700;
         margin-top:20px;
     ">
-        Info Only Accurate For Royston, Hertfordshire. This Is Not An Official Service.
+        Info Only Accurate For Marden. This Is Not An Official Service.
     </h6>
 </div>
 
 <script>
+// Format date
 function formatDate(d) {
     return d.toLocaleDateString("en-GB", {
         weekday: "long",
@@ -123,7 +106,12 @@ function formatDate(d) {
     });
 }
 
-function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+function addDays(date, days) {
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    return d;
+}
+
 function nextCycle(start, cycleDays, today) {
     let d = new Date(start);
     while (d < today) d = addDays(d, cycleDays);
@@ -133,26 +121,46 @@ function nextCycle(start, cycleDays, today) {
 const today = new Date();
 const tomorrow = addDays(today, 1);
 
+// Marden bin cycles
 const cycles = {
-    nonRecyclable: { name: "Non-Recyclable Waste (Purple Lid)", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
-    food: { name: "Food Waste (Brown Caddy)", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
-    mixed: { name: "Mixed Recycling (Black Lid)", start: new Date("2025-11-24"), cycle: 21, color:"black" },
-    garden: { name: "Garden Waste (Brown Lid)", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
-    paper: { name: "Cardboard & Paper (Blue Lid)", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
+    general: {
+        name: "General Waste (Black Bin)",
+        start: new Date("2025-12-15"),
+        cycle: 14,
+        color: "blackbin"
+    },
+    food: {
+        name: "Food Waste (Orange Lid)",
+        start: new Date("2025-12-08"),
+        cycle: 7,
+        color: "orange"
+    },
+    recycling: {
+        name: "Recycling (Green Bin)",
+        start: new Date("2025-12-08"),
+        cycle: 14,
+        color: "green"
+    },
+    garden: {
+        name: "Garden Waste (Brown Bin)",
+        start: new Date("2025-12-15"),
+        cycle: 14,
+        color: "brown"
+    }
 };
 
 const output = document.getElementById("output");
 
-// Convert object → array so we can sort
+// Convert to array so we can sort
 let binsArray = Object.values(cycles).map(bin => {
     bin.nextDate = nextCycle(bin.start, bin.cycle, today);
     return bin;
 });
 
-// Sort by next collection date (earliest first)
+// Sort earliest → latest
 binsArray.sort((a, b) => a.nextDate - b.nextDate);
 
-// Output sorted list
+// Output
 binsArray.forEach(bin => {
     let next = bin.nextDate;
 
@@ -164,17 +172,13 @@ binsArray.forEach(bin => {
     if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
 
     let borderStyle = "6px solid #333";
-    if (isToday || isTomorrow) borderStyle = '6px solid white';
+    if (isToday || isTomorrow) borderStyle = "6px solid #17D860";
 
     output.innerHTML += `
         <div class="bin ${bin.color}" style="border:${borderStyle}">
             <h2>${bin.name}</h2>
             <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
-            <p><strong>Collection cycle:</strong> Every ${
-                bin.cycle === 7 ? "Monday" : 
-                bin.cycle === 14 ? "Monday fortnightly" : 
-                "3rd Monday"
-            }</p>
+            <p><strong>Cycle:</strong> Every ${bin.cycle} days</p>
         </div>
     `;
 });

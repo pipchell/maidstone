@@ -2,187 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bin Collections - Maidstone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bins - Maidstone</title>
 <link rel="icon" type="image/png" href="logo2.png">
 
 <style>
-@font-face {
-    font-family: 'LeagueSpartan';
-    src: url('LeagueSpartan-Bold.woff2') format('woff2'),
-         url('LeagueSpartan-Bold.woff') format('woff');
-    font-weight: 700;
-}
+    @font-face {
+        font-family: 'LeagueSpartan';
+        src: url('LeagueSpartan.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
 
-* { box-sizing: border-box; }
+    body {
+        font-family: 'LeagueSpartan', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #222;
+        text-align: center;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #000;
-    color: white;
-    font-family: Arial, sans-serif;
-}
+    h1 {
+        margin-top: 20px;
+        font-size: 2.2rem;
+        font-weight: 700;
+    }
 
-.wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    h2 {
+        font-size: 1.4rem;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
 
-h1 {
-    text-align: center;
-    font-family: 'LeagueSpartan';
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: #17D860;
-    font-size: 40px;
-}
+    .bin-container {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px 40px 20px;
+    }
 
-.bin {
-    padding: 30px;
-    margin-bottom: 30px;
-    border-radius: 12px;
-    border: 6px solid #333;
-    font-family: 'LeagueSpartan';
-    color: white;
-    width: 100%;
-    text-align: center;
-}
+    .bin-card {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        text-align: center;
+    }
 
-.blackbin { background: #111; }
-.orange { background: #7a3e00; }
-.green { background: #003d1a; }
-.brown { background: #3b2400; }
+    .bin-card h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.3rem;
+    }
 
-.today, .tomorrow {
-    color: #4db6ff;
-    font-weight: bold;
-}
+    .bin-card p {
+        margin: 5px 0;
+        font-size: 1rem;
+    }
 
-footer {
-    text-align: center;
-    margin-top: 50px;
-    font-family: 'LeagueSpartan';
-    font-size: 18px;
-}
-
-@media screen and (max-width: 768px) {
-    .wrapper { padding: 15px; }
-    h1 { font-size: 44px; }
-    .bin { padding: 36px; font-size: 20px; }
-    .today, .tomorrow { font-size: 22px; }
-    footer { font-size: 20px; }
-}
+    h6 {
+        margin-top: 35px;
+        margin-bottom: 25px;
+        font-size: 0.85rem;
+        opacity: 0.7;
+        font-weight: 400;
+    }
 </style>
 </head>
+
 <body>
 
-<div class="wrapper">
-    <h1>Bin Collections - Marden</h1>
+<h1>Maidstone Bin Collection</h1>
+<h2>Live Local Collection Information</h2>
 
-    <div id="output"></div>
+<div class="bin-container">
 
-    <footer>Pip Chell - Marden Edition</footer>
+    <div class="bin-card">
+        <h3>General Waste (Black Bin)</h3>
+        <p>Every 14 days</p>
+        <p><strong>Next Collection: 15/12/25</strong></p>
+    </div>
 
-    <h6 style="
-        text-align:center;
-        font-family:'LeagueSpartan';
-        font-weight:700;
-        margin-top:20px;
-    ">
-        Info Only Accurate For Marden. This Is Not An Official Service.
-    </h6>
+    <div class="bin-card">
+        <h3>Food Waste (Orange Lid)</h3>
+        <p>Every 7 days</p>
+        <p><strong>Next Collection: 08/12/25</strong></p>
+    </div>
+
+    <div class="bin-card">
+        <h3>Recycling (Green Bin)</h3>
+        <p>Every 14 days</p>
+        <p><strong>Next Collection: 08/12/25</strong></p>
+    </div>
+
+    <div class="bin-card">
+        <h3>Garden Waste (Brown Bin)</h3>
+        <p>Every 14 days</p>
+        <p><strong>Next Collection: 15/12/25</strong></p>
+    </div>
+
 </div>
 
-<script>
-// Format date
-function formatDate(d) {
-    return d.toLocaleDateString("en-GB", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-    });
-}
-
-function addDays(date, days) {
-    const d = new Date(date);
-    d.setDate(d.getDate() + days);
-    return d;
-}
-
-function nextCycle(start, cycleDays, today) {
-    let d = new Date(start);
-    while (d < today) d = addDays(d, cycleDays);
-    return d;
-}
-
-const today = new Date();
-const tomorrow = addDays(today, 1);
-
-// Marden bin cycles
-const cycles = {
-    general: {
-        name: "General Waste (Black Bin)",
-        start: new Date("2025-12-15"),
-        cycle: 14,
-        color: "blackbin"
-    },
-    food: {
-        name: "Food Waste (Orange Lid)",
-        start: new Date("2025-12-08"),
-        cycle: 7,
-        color: "orange"
-    },
-    recycling: {
-        name: "Recycling (Green Bin)",
-        start: new Date("2025-12-08"),
-        cycle: 14,
-        color: "green"
-    },
-    garden: {
-        name: "Garden Waste (Brown Bin)",
-        start: new Date("2025-12-15"),
-        cycle: 14,
-        color: "brown"
-    }
-};
-
-const output = document.getElementById("output");
-
-// Convert to array so we can sort
-let binsArray = Object.values(cycles).map(bin => {
-    bin.nextDate = nextCycle(bin.start, bin.cycle, today);
-    return bin;
-});
-
-// Sort earliest → latest
-binsArray.sort((a, b) => a.nextDate - b.nextDate);
-
-// Output
-binsArray.forEach(bin => {
-    let next = bin.nextDate;
-
-    let labelHTML = "";
-    let isToday = formatDate(next) === formatDate(today);
-    let isTomorrow = formatDate(next) === formatDate(tomorrow);
-
-    if (isToday) labelHTML = " <span class='today'>(Today)</span>";
-    if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
-
-    let borderStyle = "6px solid #333";
-    if (isToday || isTomorrow) borderStyle = "6px solid #17D860";
-
-    output.innerHTML += `
-        <div class="bin ${bin.color}" style="border:${borderStyle}">
-            <h2>${bin.name}</h2>
-            <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
-            <p><strong>Cycle:</strong> Every ${bin.cycle} days</p>
-        </div>
-    `;
-});
-</script>
+<h6>Info Only Accurate For Maidstone, Kent. This Is Not An Official Service.</h6>
 
 </body>
 </html>
